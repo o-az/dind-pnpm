@@ -9,8 +9,8 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   # ubuntu-dind-pnpm-tmp
-  IMAGE_NAME: sudorekt/ubuntu-dind-pnpm-tmp
-  TEST_TAG: sudorekt/ubuntu-dind-pnpm-tmp:latest
+  TEST_TAG: sudorekt/ubuntu-dind-pnpm:test
+  LATEST_TAG: sudorekt/ubuntu-dind-pnpm:latest
 
 jobs:
   docker-hub:
@@ -63,7 +63,7 @@ jobs:
             node --version && \
             pnpm --version && \
             doppler --version
-          CONTAINER_NAME: ubuntu-dind-pnpm-tmp
+          CONTAINER_NAME: test-ci-image
         run: |
           docker run --privileged --rm -it --detach --name $CONTAINER_NAME ${{ env.TEST_TAG }}
           docker exec $CONTAINER_NAME /bin/bash -c $TEST_COMMAND
@@ -77,11 +77,8 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            sudorekt/${{ env.IMAGE_NAME }}:latest
-            sudorekt/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
-
-            ghcr.io/o-az/${{ env.IMAGE_NAME }}:latest
-            ghcr.io/o-az/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+            ${{ env.LATEST_TAG }}
+            ghcr.io/o-az/ubuntu-dind-pnpm:latest
           #
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
