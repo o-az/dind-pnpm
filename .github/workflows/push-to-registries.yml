@@ -2,9 +2,10 @@ name: ci
 
 on:
   push:
-    tags:
-      - "*"
-
+    # tags:
+    #   - "*"
+    branches:
+      - temp*
 env:
   DOCKER_BUILDKIT: 1
   # ubuntu-dind-pnpm-tmp
