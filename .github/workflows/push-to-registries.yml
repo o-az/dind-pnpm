@@ -58,24 +58,33 @@ jobs:
           tags: ${{ env.TEST_TAG }}
       #
       - name: Test
+        env:
+          TEST_COMMAND: |
+            echo "Print versions..." && \
+            docker --version && \
+            docker compose version && \
+            node --version && \
+            pnpm --version && \
+            doppler --version
         run: |
-          docker run --rm ${{ env.TEST_TAG }}
+          docker run --privileged --rm -it --detach --name ${{ env.TEST_TAG }} ${{ env.TEST_TAG }}
+          docker exec ${{ env.TEST_TAG }} /bin/bash -c "${{ env.TEST_COMMAND }}"
       #
+      # DOCKER HUB: sudorekt/ubuntu-dind-pnpm
+      # GITHUB CONTAINER REGISTRY: ghcr.io/o-az/ubuntu-dind-pnpm
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
           push: true
-          # DOCKER HUB: sudorekt/ubuntu-dind-pnpm
-          # GITHUB CONTAINER REGISTRY: ghcr.io/o-az/ubuntu-dind-pnpm
+          platforms: linux/amd64,linux/arm64
           tags: |
             sudorekt/${{ env.IMAGE_NAME }}:latest
             sudorekt/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
 
             ghcr.io/o-az/${{ env.IMAGE_NAME }}:latest
             ghcr.io/o-az/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
-
+          #
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
       - # Temp fix
