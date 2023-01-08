@@ -66,7 +66,7 @@ jobs:
           CONTAINER_NAME: ubuntu-dind-pnpm-tmp
         run: |
           docker run --privileged --rm -it --detach --name $CONTAINER_NAME ${{ env.TEST_TAG }}
-          docker exec ${{ env.TEST_TAG }} /bin/bash -c $TEST_COMMAND
+          docker exec $CONTAINER_NAME /bin/bash -c $TEST_COMMAND
       #
       # DOCKER HUB: sudorekt/ubuntu-dind-pnpm
       # GITHUB CONTAINER REGISTRY: ghcr.io/o-az/ubuntu-dind-pnpm
