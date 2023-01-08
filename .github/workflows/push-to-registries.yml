@@ -12,8 +12,8 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
-  IMAGE_NAME: ubuntu-dind-pnpm_tmp
-  TEST_TAG: sudorekt/${{ env.IMAGE_NAME }}:test
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}_tmp
+  TEST_TAG: sudorekt/${{ secrets.IMAGE_NAME }}_tmp:latest
 
 jobs:
   docker-hub:
