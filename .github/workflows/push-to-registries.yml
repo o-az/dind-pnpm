@@ -9,8 +9,8 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   # ubuntu-dind-pnpm-tmp
-  IMAGE_NAME: sudorekt/${{ secrets.IMAGE_NAME }}-tmp
-  TEST_TAG: sudorekt/${{ secrets.IMAGE_NAME }}-tmp:latest
+  IMAGE_NAME: sudorekt/ubuntu-dind-pnpm-tmp
+  TEST_TAG: sudorekt/ubuntu-dind-pnpm-tmp:latest
 
 jobs:
   docker-hub:
@@ -63,9 +63,9 @@ jobs:
             node --version && \
             pnpm --version && \
             doppler --version
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          CONTAINER_NAME: ubuntu-dind-pnpm-tmp
         run: |
-          docker run --privileged --rm -it --detach --name $IMAGE_NAME $IMAGE_NAME
+          docker run --privileged --rm -it --detach --name $CONTAINER_NAME ${{ env.TEST_TAG }}
           docker exec ${{ env.TEST_TAG }} /bin/bash -c $TEST_COMMAND
       #
       # DOCKER HUB: sudorekt/ubuntu-dind-pnpm

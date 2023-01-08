@@ -19,6 +19,7 @@ RUN apt-get update --yes && \
   sudo \
   curl \
   wget \
+  unzip \
   gnupg \
   procps \
   systemd \
