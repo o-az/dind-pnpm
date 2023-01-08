@@ -9,7 +9,7 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   # ubuntu-dind-pnpm-tmp
-  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}-tmp
+  IMAGE_NAME: sudorekt/${{ secrets.IMAGE_NAME }}-tmp
   TEST_TAG: sudorekt/${{ secrets.IMAGE_NAME }}-tmp:latest
 
 jobs:
